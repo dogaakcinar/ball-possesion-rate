@@ -3,7 +3,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"time"
 )
 
@@ -11,7 +13,6 @@ import (
 type Team struct {
 	Name           string
 	PossessionRate float64
-	PreviousRate   float64
 	HasPossession  bool
 	IsHomeTeam     bool
 }
@@ -35,34 +36,43 @@ func NewTeam(name string, isHomeTeam bool) *Team {
 // SwitchPossession switches the possession to the current team
 func (t *Team) SwitchPossession(previousTeam *Team) {
 	t.HasPossession = true
-	t.PreviousRate = previousTeam.PossessionRate
-
 	previousTeam.HasPossession = false
-	previousTeam.PossessionRate = 100.0 - t.PreviousRate
 }
 
 // PrintPossession prints the possession rates of both teams
 func (t *Team) PrintPossession(otherTeam *Team) {
 	fmt.Printf("Possession: %s - %.2f%% | %s - %.2f%%\n",
 		t.Name, t.PossessionRate, otherTeam.Name, otherTeam.PossessionRate)
+	if t.HasPossession {
+		fmt.Println("Team with possesion: ", t.Name)
+	} else {
+		fmt.Println("Team with possesion: ", otherTeam.Name)
+	}
 }
 
-func calculatePossessionRate(elapsedTime time.Duration, isHomeTeam bool) float64 {
-	// Calculate the possession rate based on elapsed time
+func calculatePossessionRate(elapsedTime time.Duration, totaltime time.Duration) float64 {
 	const maxPossessionRate = 100.0
-	const totalTime = 10 * time.Second
+	var totalTime = totaltime
 
-	if elapsedTime >= totalTime {
-		return maxPossessionRate
-	}
-
-	elapsedSeconds := float64(elapsedTime.Seconds())
+	elapsedSeconds := elapsedTime.Seconds()
 	elapsedRate := elapsedSeconds / totalTime.Seconds()
 	possessionRate := maxPossessionRate * elapsedRate
 
-	if !isHomeTeam {
-		possessionRate = maxPossessionRate - possessionRate
-	}
-
 	return possessionRate
+}
+
+func startGame() {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("Press Enter to start the game")
+	input, err := reader.ReadString('\n')
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if input == "\n" {
+		fmt.Println("Starting the game...")
+	} else {
+		fmt.Println("Invalid input. Please try again.")
+		startGame()
+	}
 }
