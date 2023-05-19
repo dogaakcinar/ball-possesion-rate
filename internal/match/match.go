@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/dogaakcinar/ball-possesion-rate/internal/team"
@@ -95,7 +96,6 @@ func StartMatch() (*Match, error) {
 		return nil, err
 	}
 
-	match := NewMatch(team1Name, team2Name)
-
+	match := NewMatch(strings.TrimSpace(team1Name), strings.TrimSpace(team2Name))
 	return match, nil
 }
