@@ -56,11 +56,11 @@ func (m *Match) PrintPossesion() {
 	fmt.Println("Team with possession:", possessingTeam)
 }
 
-func (m *Match) UpdateTimeWithBall(chTime time.Time) {
+func (m *Match) UpdateTimeWithBall(chTime time.Duration) {
 	if m.Team1WithPossesion {
-		m.Team1TimeWithBall += time.Since(chTime)
+		m.Team1TimeWithBall += chTime
 	} else {
-		m.Team2TimeWithBall += time.Since(chTime)
+		m.Team2TimeWithBall += chTime
 	}
 }
 
