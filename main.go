@@ -18,7 +18,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	refreshRate := 3 * time.Second
+	refreshRate := 1 * time.Second
 
 	router := gin.Default()
 
@@ -32,7 +32,7 @@ func main() {
 	// Start a goroutine to update the possession rates periodically
 	go func() {
 		for {
-			time.Sleep(3 * time.Second)
+			time.Sleep(refreshRate)
 			m.UpdateTimeWithBall(refreshRate)
 			m.CalculatePossessionRate()
 			m.PrintPossesion()
