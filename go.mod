@@ -1,3 +1,3 @@
-module football-possession-calculator
+module github.com/dogaakcinar/ball-possesion-rate
 
 go 1.19
