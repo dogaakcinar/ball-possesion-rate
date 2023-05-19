@@ -8,16 +8,18 @@ import (
 	"os"
 	"strings"
 	"time"
-	"github.com/dogaakcinar/ball-possesion-rate/game"
+
+	"github.com/dogaakcinar/ball-possesion-rate/internal/game"
+	"github.com/dogaakcinar/ball-possesion-rate/internal/team"
 )
 
 func main() {
 	// Create two teams
 	var team1Time time.Duration
 	var team2Time time.Duration
-	teamNames, _ := game.startGame()
-	team1 := NewTeam(teamNames[0])
-	team2 := NewTeam(teamNames[1])
+	teamNames, _ := game.StartGame()
+	team1 := team.NewTeam(teamNames[0])
+	team2 := team.NewTeam(teamNames[1])
 	// The starting team has the kickoff possession
 	team1.HasPossession = true
 
@@ -51,8 +53,8 @@ func main() {
 		// Calculate the elapsed time
 
 		// Calculate possession rates based on elapsed time
-		team1.PossessionRate = game.calculatePossessionRate(team1Time, team1Time+team2Time)
-		team2.PossessionRate = game.calculatePossessionRate(team2Time, team1Time+team2Time)
+		team1.PossessionRate = game.CalculatePossessionRate(team1Time, team1Time+team2Time)
+		team2.PossessionRate = game.CalculatePossessionRate(team2Time, team1Time+team2Time)
 	}
 	fmt.Printf("Match summary: \n"+
 		"Total Time = %.2f \n"+

@@ -1,13 +1,9 @@
 // team.go
 
-package main
+package team
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strings"
-	"time"
 )
 
 // Team represents a football team
@@ -41,5 +37,3 @@ func (t *Team) PrintPossession(otherTeam *Team) {
 		fmt.Println("Team with possesion: ", otherTeam.Name)
 	}
 }
-
-

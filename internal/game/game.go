@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func calculatePossessionRate(elapsedTime time.Duration, totaltime time.Duration) float64 {
+func CalculatePossessionRate(elapsedTime time.Duration, totaltime time.Duration) float64 {
 	const maxPossessionRate = 100.0
 	var totalTime = totaltime
 	elapsedSeconds := elapsedTime.Seconds()
@@ -18,7 +18,7 @@ func calculatePossessionRate(elapsedTime time.Duration, totaltime time.Duration)
 	return possessionRate
 }
 
-func startGame() ([2]string, error) {
+func StartGame() ([2]string, error) {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Press Enter to start the game")
 	input, err := reader.ReadString('\n')
@@ -30,7 +30,7 @@ func startGame() ([2]string, error) {
 		fmt.Println("Starting the game...")
 	} else {
 		fmt.Println("Invalid input. Please try again.")
-		startGame()
+		StartGame()
 	}
 	fmt.Println("Press Enter Team1's name: ")
 	team1Name, err := reader.ReadString('\n')
