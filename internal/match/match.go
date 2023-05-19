@@ -66,8 +66,7 @@ func (m *Match) UpdateTimeWithBall(chTime time.Duration) {
 
 func (m *Match) CalculatePossessionRate() {
 	const maxPossessionRate = 100.0
-	var totalTime = time.Since(m.StartTime).Seconds()
-	m.Team1PossesionRate = (m.Team1TimeWithBall.Seconds() / totalTime) * maxPossessionRate
+	m.Team1PossesionRate = (float64(m.Team1TimeWithBall.Seconds()) / float64(m.Team2TimeWithBall.Seconds()+m.Team1TimeWithBall.Seconds())) * maxPossessionRate
 	m.Team2PossesionRate = 100.0 - m.Team1PossesionRate
 }
 
