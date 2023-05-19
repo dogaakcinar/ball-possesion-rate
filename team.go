@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -14,22 +15,13 @@ type Team struct {
 	Name           string
 	PossessionRate float64
 	HasPossession  bool
-	IsHomeTeam     bool
 }
 
-func NewTeam(name string, isHomeTeam bool) *Team {
+func NewTeam(name string) *Team {
 	team := &Team{
 		Name:          name,
-		HasPossession: isHomeTeam,
-		IsHomeTeam:    isHomeTeam,
+		HasPossession: false,
 	}
-
-	if isHomeTeam {
-		team.PossessionRate = 100
-	} else {
-		team.PossessionRate = 0
-	}
-
 	return team
 }
 
@@ -53,7 +45,6 @@ func (t *Team) PrintPossession(otherTeam *Team) {
 func calculatePossessionRate(elapsedTime time.Duration, totaltime time.Duration) float64 {
 	const maxPossessionRate = 100.0
 	var totalTime = totaltime
-
 	elapsedSeconds := elapsedTime.Seconds()
 	elapsedRate := elapsedSeconds / totalTime.Seconds()
 	possessionRate := maxPossessionRate * elapsedRate
@@ -61,13 +52,13 @@ func calculatePossessionRate(elapsedTime time.Duration, totaltime time.Duration)
 	return possessionRate
 }
 
-func startGame() {
+func startGame() ([2]string, error) {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Press Enter to start the game")
 	input, err := reader.ReadString('\n')
 	if err != nil {
 		fmt.Println(err)
-		return
+		return [2]string{}, err
 	}
 	if input == "\n" {
 		fmt.Println("Starting the game...")
@@ -75,4 +66,17 @@ func startGame() {
 		fmt.Println("Invalid input. Please try again.")
 		startGame()
 	}
+	fmt.Println("Press Enter Team1's name: ")
+	team1Name, err := reader.ReadString('\n')
+	if err != nil {
+		return [2]string{}, err
+	}
+
+	fmt.Println("Press Enter Team2's name:")
+	team2Name, err := reader.ReadString('\n')
+	if err != nil {
+		return [2]string{}, err
+	}
+
+	return [2]string{strings.TrimSpace(team1Name), strings.TrimSpace(team2Name)}, nil
 }
