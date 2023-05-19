@@ -30,7 +30,7 @@ func NewMatch(team1Name string, team2Name string) *Match {
 		Team2:              team.NewTeam(team2Name),
 		Team1TimeWithBall:  0,
 		Team2TimeWithBall:  0,
-		IsRunning:          false,
+		IsRunning:          true,
 		Team1WithPossesion: true,
 		Team2WithPossesion: false,
 		Team1PossesionRate: 0,
@@ -57,9 +57,9 @@ func (m *Match) PrintPossesion() {
 }
 
 func (m *Match) UpdateTimeWithBall(chTime time.Duration) {
-	if m.Team1WithPossesion {
+	if m.Team1WithPossesion && m.IsRunning {
 		m.Team1TimeWithBall += chTime
-	} else {
+	} else if m.Team2WithPossesion && m.IsRunning {
 		m.Team2TimeWithBall += chTime
 	}
 }

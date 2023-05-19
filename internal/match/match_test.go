@@ -11,7 +11,7 @@ func TestMatch(t *testing.T) {
 	// Create two teams
 	team1 := team.NewTeam("Team 1")
 	team2 := team.NewTeam("Team 2")
-	refreshRate := time.Second / 20
+	refreshRate := time.Second / 10
 
 	// Create a match
 	m := NewMatch(team1.Name, team2.Name)
@@ -24,17 +24,13 @@ func TestMatch(t *testing.T) {
 	}()
 
 	// Switch possession and update time with ball
-	time.Sleep(time.Millisecond * 5000)
-	t.Logf("%2f", m.Team1TimeWithBall.Seconds())
+	time.Sleep(time.Millisecond * 2000)
 	m.SwitchPossession()
-	time.Sleep(time.Millisecond * 5000)
-	t.Logf("%2f", m.Team2TimeWithBall.Seconds())
-	t.Logf("%2f", time.Since(m.StartTime).Seconds())
-	// Verify the possession rates
+	time.Sleep(time.Millisecond * 2000)
 
-		// Sleep for a while to allow the goroutine to update the values
-	time.Sleep(refreshRate)
-	
+	t.Logf("team1:%2f", m.Team1TimeWithBall.Seconds())
+	t.Logf("team2:%2f", m.Team2TimeWithBall.Seconds())
+	t.Logf("total: %2f", time.Since(m.StartTime).Seconds()) // Verify the possession rates
 	expectedMinRate := 49.8
 	expectedMaxRate := 50.2
 	m.CalculatePossessionRate()
@@ -42,7 +38,6 @@ func TestMatch(t *testing.T) {
 		t.Errorf("Team possession rate out of range. Expected range: %.2f - %.2f, Got: %.2f", expectedMinRate, expectedMaxRate, m.Team2PossesionRate)
 		m.PrintPossesion()
 	} else {
-		t.Logf("Team 1 possesion rate: %.3f \n Team 2 possesion rate: %.3f ", m.Team1PossesionRate, m.Team2PossesionRate)
+		t.Logf("Team 1 possession rate: %.3f\nTeam 2 possession rate: %.3f", m.Team1PossesionRate, m.Team2PossesionRate)
 	}
-
 }
