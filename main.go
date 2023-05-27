@@ -6,7 +6,6 @@ import (
 	"os"
 	"strings"
 	"time"
-
 	"github.com/dogaakcinar/ball-possesion-rate/internal/match"
 )
 
