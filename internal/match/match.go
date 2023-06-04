@@ -30,7 +30,7 @@ func NewMatch(team1Name string, team2Name string) *Match {
 		Team2:              team.NewTeam(team2Name),
 		Team1TimeWithBall:  0,
 		Team2TimeWithBall:  0,
-		IsRunning:          false,
+		IsRunning:          true,
 		Team1WithPossesion: true,
 		Team2WithPossesion: false,
 		Team1PossesionRate: 0,
@@ -56,18 +56,17 @@ func (m *Match) PrintPossesion() {
 	fmt.Println("Team with possession:", possessingTeam)
 }
 
-func (m *Match) UpdateTimeWithBall(chTime time.Time) {
-	if m.Team1WithPossesion {
-		m.Team1TimeWithBall += time.Since(chTime)
-	} else {
-		m.Team2TimeWithBall += time.Since(chTime)
+func (m *Match) UpdateTimeWithBall(chTime time.Duration) {
+	if m.Team1WithPossesion && m.IsRunning {
+		m.Team1TimeWithBall += chTime
+	} else if m.Team2WithPossesion && m.IsRunning {
+		m.Team2TimeWithBall += chTime
 	}
 }
 
 func (m *Match) CalculatePossessionRate() {
 	const maxPossessionRate = 100.0
-	var totalTime = time.Since(m.StartTime).Seconds()
-	m.Team1PossesionRate = (m.Team1TimeWithBall.Seconds() / totalTime) * maxPossessionRate
+	m.Team1PossesionRate = (float64(m.Team1TimeWithBall.Seconds()) / float64(m.Team2TimeWithBall.Seconds()+m.Team1TimeWithBall.Seconds())) * maxPossessionRate
 	m.Team2PossesionRate = 100.0 - m.Team1PossesionRate
 }
 
