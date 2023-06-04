@@ -18,7 +18,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	refreshRate := 1 * time.Second
+	refreshRate := time.Second
 
 	router := gin.Default()
 

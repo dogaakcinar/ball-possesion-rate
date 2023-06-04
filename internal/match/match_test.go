@@ -11,22 +11,33 @@ func TestMatch(t *testing.T) {
 	// Create two teams
 	team1 := team.NewTeam("Team 1")
 	team2 := team.NewTeam("Team 2")
-	refreshRate := time.Second / 10
+	refreshRate := time.Second / 3
+	ch := make(chan int)
 
 	// Create a match
 	m := NewMatch(team1.Name, team2.Name)
 
-	go func() {
+	go func(chan int) {
 		for {
-			time.Sleep(refreshRate)
-			m.UpdateTimeWithBall(refreshRate)
+			select {
+			case <-ch:
+				time.Sleep(refreshRate)
+				m.UpdateTimeWithBall(refreshRate)
+				t.Logf("in chan")
+			default:
+				time.Sleep(refreshRate)
+				m.UpdateTimeWithBall(refreshRate)
+				t.Logf("in default")
+			}
 		}
-	}()
+	}(ch)
 
 	// Switch possession and update time with ball
 	time.Sleep(time.Millisecond * 2000)
+	ch <- 1
 	m.SwitchPossession()
 	time.Sleep(time.Millisecond * 2000)
+	ch <- 1
 
 	t.Logf("team1:%2f", m.Team1TimeWithBall.Seconds())
 	t.Logf("team2:%2f", m.Team2TimeWithBall.Seconds())
