@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 	"github.com/dogaakcinar/ball-possesion-rate/internal/match"
-)
+) new 
 
 func main() {
 	m, err := match.StartMatch()
